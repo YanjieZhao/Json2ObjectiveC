@@ -31,6 +31,7 @@
         interfaceResult = [interfaceResult stringByAppendingString:[c parseClassInterface]];
         implementResult = [implementResult stringByAppendingString:[c parseClassImplementation]];
     }
+    
     NSLog(@"%@ \n\n\n %@", interfaceResult, implementResult);
 }
 
