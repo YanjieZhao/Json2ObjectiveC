@@ -63,15 +63,28 @@
 -(NSString *)parseClassImplementation{
     NSString *implement = [NSString stringWithFormat:@"\n@implementation %@\n+(NSDictionary *)JSONKeyPathsByPropertyKey{\nreturn\n@{\n", self.name];
     
+    NSString *transformerFuncs = @"";
+    
     NSString *dicStr = @"";
     for (Property *property in self.properties) {
         if (![dicStr isEqualToString:@""]) {
             dicStr = [dicStr stringByAppendingString:@",\n"];
         }
         dicStr = [dicStr stringByAppendingString:[NSString stringWithFormat:@"@\"%@\":@\"%@\"", property.name, property.name]];
+        
+        if (property.pType == DICTIONARY) {
+            NSString *transFunc = [NSString stringWithFormat:@"\n+(NSValueTransformer *)%@JSONTransformer\n{\nreturn [MTLValueTransformer transformerWithBlock:^id(NSDictionary *dict) {\n%@* obj = [MTLJSONAdapter modelOfClass:[%@ class] fromJSONDictionary:dict error:nil];\nreturn obj;\n}];\n}\n", property.name, property.classType, property.classType];
+            
+            transformerFuncs = [transformerFuncs stringByAppendingString:transFunc];
+        }
+        if (property.pType == ARRAY) {
+            NSString *transFunc = [NSString stringWithFormat:@"\n+(NSValueTransformer *)%@JSONTransformer\n{\nreturn [MTLValueTransformer transformerWithBlock:^id(NSArray *array) {\nNSMutableArray *temp = [[NSMutableArray alloc] init];\nfor (id obj in array) {\nif ([obj isKindOfClass:[NSDictionary class]]) {\n%@ * c = [MTLJSONAdapter modelOfClass:[%@ class] fromJSONDictionary:obj error:nil];\n[temp addObject:c];\n}else{\n[temp addObject:obj];\n}\n}\nreturn temp;\n}];\n}\n", property.name, property.classType, property.classType];
+            transformerFuncs = [transformerFuncs stringByAppendingString:transFunc];
+        }
     }
     implement = [implement stringByAppendingString:dicStr];
     implement = [implement stringByAppendingString:@"\n};\n}"];
+    implement = [implement stringByAppendingString:transformerFuncs];
     implement = [implement stringByAppendingString:@"@end"];
     return implement;
 }
