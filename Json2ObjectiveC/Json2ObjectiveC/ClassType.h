@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Property.h"
 
+// This is documnet
 @interface ClassType : NSObject
 @property (nonatomic, strong) NSMutableArray *properties;
 @property (nonatomic, copy) NSString *name;
@@ -16,6 +17,11 @@
 
 -(instancetype)initWithName:(NSString *)name;
 -(void)addProperty:(Property *)property;
+/**
+ *  test
+ *
+ *  @return test
+ */
 -(NSString *)parseClassInterface;
 -(NSString *)parseClassImplementation;
 @end

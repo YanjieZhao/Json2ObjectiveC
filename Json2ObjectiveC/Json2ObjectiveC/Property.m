@@ -9,7 +9,9 @@
 #import "Property.h"
 
 @implementation Property
--(instancetype)initWithName:(NSString *)name type:(enum PropertyType)type classType:(NSString *)cType{
+- (instancetype)initWithName:(NSString *)name
+                        type:(enum PropertyType)type
+                   classType:(NSString *)cType {
     self = [super init];
     if (self != nil) {
         self.name = name;

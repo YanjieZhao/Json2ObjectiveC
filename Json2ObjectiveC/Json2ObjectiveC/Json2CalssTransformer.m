@@ -19,7 +19,9 @@
 }
 
 -(void)transformData:(NSData *)data{
-    id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:data
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:nil];
     [self createClass:jsonObject name:@"RootObject"];
     [self printResult];
     
@@ -28,11 +30,23 @@
     NSString *interfaceResult = @"#import <Foundation/Foundation.h>\n#import \"Mantle.h\"";
     NSString *implementResult = @"#import <Foundation/Foundation.h>\n#import \"Mantle.h\"";
     for (ClassType *c in self.classes) {
-        interfaceResult = [interfaceResult stringByAppendingString:[c parseClassInterface]];
-        implementResult = [implementResult stringByAppendingString:[c parseClassImplementation]];
+        interfaceResult = [interfaceResult
+                           stringByAppendingString:[c parseClassInterface]];
+        implementResult = [implementResult
+                           stringByAppendingString:[c parseClassImplementation]];
     }
     
     NSLog(@"%@ \n\n\n %@", interfaceResult, implementResult);
+    
+    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = [path objectAtIndex:0];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    NSString *filepath = [documentDirectory stringByAppendingPathComponent:@"Data.h"];
+    [fileManager createFileAtPath:filepath contents:[interfaceResult dataUsingEncoding:NSUTF8StringEncoding] attributes:nil];
+    
+    filepath = [documentDirectory stringByAppendingPathComponent:@"Data.m"];
+    [fileManager createFileAtPath:filepath contents:[implementResult dataUsingEncoding:NSUTF8StringEncoding] attributes:nil];
 }
 
 
@@ -51,7 +65,10 @@
         if ([value isKindOfClass:[NSDictionary class]]) {
             propertyClass = [key stringByAppendingString:@"Class"];
             [self createClass:value name:propertyClass];
-            property = [[Property alloc] initWithName:key type:DICTIONARY classType:propertyClass];
+            property = [[Property alloc]
+                        initWithName:key
+                        type:DICTIONARY
+                        classType:propertyClass];
         }
         else if([value isKindOfClass:[NSArray class]]){
             propertyClass = [[key stringByAppendingString:@"List"] stringByAppendingString:@"Class"];

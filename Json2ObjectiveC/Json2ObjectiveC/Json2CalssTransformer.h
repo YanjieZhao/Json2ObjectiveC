@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "ClassType.h"
-@interface Json2CalssTransformer : NSObject
+@interface Json2CalssTransformer : NSObject{
+@private
+    id delegate_;
+}
 @property (nonatomic, strong) NSMutableDictionary *classDict;
 @property (nonatomic, strong) NSMutableArray *classes;
 -(void)transformData:(NSData *)data;

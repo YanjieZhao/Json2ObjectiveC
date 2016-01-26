@@ -18,6 +18,7 @@
     }
     return self;
 }
+
 -(void)addProperty:(Property *)property{
     if (property == nil) {
         return;
@@ -26,7 +27,8 @@
     [self.properties addObject:property];
     [self.propertyDic setObject:property forKey:property.name];
 }
--(NSString *)parseClassInterface{
+
+- (NSString *)parseClassInterface{
     NSString *interface = [NSString stringWithFormat:@"\n@interface %@ : MTLModel<MTLJSONSerializing>\n", self.name];
     
     for (Property *property in self.properties) {
