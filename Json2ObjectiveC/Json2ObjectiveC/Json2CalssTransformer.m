@@ -47,6 +47,8 @@
     
     filepath = [documentDirectory stringByAppendingPathComponent:@"Data.m"];
     [fileManager createFileAtPath:filepath contents:[implementResult dataUsingEncoding:NSUTF8StringEncoding] attributes:nil];
+    self.hResult = interfaceResult;
+    self.mResult = implementResult;
 }
 
 

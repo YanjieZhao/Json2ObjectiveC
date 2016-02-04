@@ -18,5 +18,7 @@
 @property (nonatomic, strong) NSMutableDictionary* classDict;
 @property (nonatomic, copy) NSString *interface;
 @property (nonatomic, copy) NSString *implementation;
+@property (weak) IBOutlet NSTextField *outputField;
+@property (weak) IBOutlet NSTextField *mOutputField;
 @end
 

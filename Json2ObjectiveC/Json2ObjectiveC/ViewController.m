@@ -39,6 +39,8 @@
     
     Json2CalssTransformer *trans = [[Json2CalssTransformer alloc] init];
     [trans transformData:content];
+    self.outputField.stringValue = trans.hResult;
+    self.mOutputField.stringValue = trans.mResult;
 }
 
 //创建新类型

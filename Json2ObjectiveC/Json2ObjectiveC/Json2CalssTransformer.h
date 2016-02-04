@@ -14,6 +14,8 @@
 }
 @property (nonatomic, strong) NSMutableDictionary *classDict;
 @property (nonatomic, strong) NSMutableArray *classes;
+@property (nonatomic, copy) NSString *hResult;
+@property (nonatomic, copy) NSString *mResult;
 -(void)transformData:(NSData *)data;
 -(void)printResult;
 @end
